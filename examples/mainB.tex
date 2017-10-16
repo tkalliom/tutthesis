@@ -1,0 +1,648 @@
+\RequirePackage{ifluatex, ifxetex} % these are for the portability of this example - can be omitted in any actual document made for a certain engine
+
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
+\else
+  % only needed for using Greek letters outside math when running PDFLaTeX - leave out otherwise
+  %\PassOptionsToPackage{LGR}{fontenc}
+  %\RequirePackage{textgreek}
+\fi
+
+
+\documentclass[twoside,draftfooter]{tutthesis} % see appendix for list of options
+
+\pagestyle{headings} % Adds titles to the header
+
+
+% ifnameyear is defined to demonstrate both versions in a single file. You may leave it out and simply use one version throughout your file.
+\newif\ifnameyear
+\nameyearfalse
+
+
+
+% ==============
+% Basic packages
+% ==============
+% You should use these unless you really know what you're doing
+
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
+\else\usepackage[utf8]{inputenc}
+\fi
+
+\usepackage[finnish,english]{babel} % The language of the thesis last
+
+% If you are working with a minimal LateX distribution, you may have to install some extra packages. Make sure that at least babel-finnish (available in e.g. texlive-lang-european) and the basic fonts (e.g. texlive-fonts-recommended) are installed.
+
+\usepackage[fixlanguage]{babelbib} % You should use this unless you are using biblatex. Add option fixlanguage if you're writing in English (the thesis writing guide is asymmetric, requiring Finnish theses to have e.g. 'eds.' for sources in English, while requiring English theses to have all such parts in English)
+
+\ifnameyear\usepackage{natbib} % add option longnamesfirst if you want to have full author list with first citation
+\else\providecommand{\citep}{\cite} % This template is written using \citep to get name-year citations right, and in numerical mode the command is here aliased to the standard \cite. If you use numbered citations, leave this out and use \cite
+\fi
+
+
+% ===============
+% Useful packages
+% ===============
+% Packages which are not required for a thesis that follows guidelines, but may be convenient or necessary in common cases
+
+\usepackage{microtype} % subtle but nice improvements to how text is printed
+
+\usepackage{textcase} % may be used to keep parts of title lowercase
+
+\usepackage{array}
+\usepackage{tabularx} % e.g. multiline cells
+%\usepackage{calc} %for performing length arithmetic such as column width = text width minus some other width
+%\usepackage{longtable} % for tables spanning multiple pages
+
+%\usepackage{psfrag} % editing ps files
+%\usepackage{subfig} % parallel small figures a,b,c,...
+%\usepackage{rotating} % for rotating e.g. full-page figures
+
+%\usepackage{siunitx} % nice formatting for combinations of number and unit
+\usepackage{amsopn} % For operator names; not necessary if amsmath is used
+%\usepackage[fleqn]{amsmath} %Extensions to math handling; if you use this, you should use e.g. gather instead of equation due to a hyperref bug
+
+\usepackage{listings} %Typesetting code
+\lstset{basicstyle=\footnotesize\ttfamily, numbers=left}
+\renewcommand{\lstlistingname}{Program} % Program if you're writing in English
+% If you want non-ASCII characters (e.g. in comments), check out the listingsutf8 package
+
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
+  \usepackage[math-style=ISO]{unicode-math} % must not precede amsmath and most other math and font related packages
+\else
+  %\usepackage{bm} % The \bm command is used for bold italic variables used in some fields not to be used with unicode-math
+  %\usepackage[helvratio=1]{newtxtext} \usepackage{newtxmath}% some recommend the newtx fonts
+  \usepackage{textcomp} % symbols like \textdegree
+\fi
+
+
+% ===========================
+% Bibliographic information
+% ===========================
+% These must be set before loading pdfx or beginning document
+\author{John Doe}
+\title{Tampere University of Technology thesis template}
+\datethesisapproved{2017}{10}{30} % year, month, day; no leading zeroes; submitted for bachelor's theses and thesisapproved for master’s
+\thesistype{Master’s thesis} % Do not use ASCII apostrophe ' as it will not be substituted with the correct one (’) in the PDF metadata. Note that there are both short version (this) and a long one - "Master’s" vs. "Master of Science"
+\major{Mathematics}
+\programme{Master’s Degree Programme in Science and Engineering} % Note apostrophes on all fields for PDF metadata
+\keywords{thesis, template, thesis structure, thesis layout}
+
+\examiner{Professor Vilma Välkky\and Professor Matti Meikäläinen} %\and for plural
+\datetopicapproved{2017}{9}{11}% only for master’s theses
+
+
+% Packages that need to be loaded late
+% ----------------------------------------------
+\usepackage[a-2u]{pdfx} % If you're using PDFLatex and your version of pdfx is not recent enough, you may run into the inputencoding bug. In that case, load inputenc after pdfx (and replace any non-ASCII characters in the metadata with e.g. \"{a})
+
+%\usepackage{hyperref} % This must (usually) be the last package you load - load this OR pdfx (which also loads hyperref). Usage of pdfx would be nice, but if you have issues with that you may fall back to just hyperref
+
+
+
+\begin{document}
+
+\maketitle
+
+
+%First, the abstract in the language of the thesis (no language selection). Note that most fields are already defined
+
+\thesisdescription{Master of Science Thesis}
+\begin{abstract}
+The abstract is a self-contained, concise description of the thesis: what was the problem, what was done, what was the result.
+Do not include charts or tables in the abstract.
+
+First include the abstract written in the main language of the thesis and then the translation.
+A bachelor's thesis in Finnish must also have a name in English for archival.
+\end{abstract}
+
+%Then, the abstract in the other language (explicit language selection) except for bachelor's theses
+
+\begin{otherlanguage}{finnish}
+
+\title{Tampereen teknillisen yliopiston opinnäytepohja}
+\programme{Teknis-luonnontieteellinen diplomi-insinöörin tutkinto-ohjelma}
+\thesisdescription{Diplomityö}
+\major{Matematiikka}
+\examiner{professori Matti Meikäläinen\and professori Vilma Välkky}
+\keywords{opinnäytetyö, opinnäytteet, pohja, rakenne, muotoilu}
+
+\begin{abstract}
+Tiivistelmä on suppea, 1 sivun mittainen itsenäinen esitys työstä: mikä oli ongelma, mitä tehtiin ja mitä saatiin tulokseksi.
+Kuvia, kaavioita ja taulukoita ei käytetä tiivistelmässä.
+
+Laita työn pääkielellä kirjoitettu tiivistelmä ensin ja käännös sen jälkeen.
+Suomenkieliselle kandidaatintyölle pitää olla myös englanninkielinen nimi arkistointia varten.
+\end{abstract}
+\end{otherlanguage}
+
+
+
+\chapter*{Preface}
+
+This document template is designed in accordance with the 2017 version of the TUT thesis writing guide, based on the LaTeX \emph{report} document class and earlier TUT LaTeX templates.
+
+The preface contains general information about the thesis process.
+Acknowledgements to those who contributed to the thesis are generally presented in the preface.
+It is not appropriate to criticize anyone in the preface, even though the preface will not affect your grade.
+The preface must fit on one page.
+Add the date, after which you have not made any revisions to the text, at the end of the preface.
+
+\vspace{2\baselineskip}
+
+In Tampere, Finland, on 31 May 2017
+
+\vspace{2\baselineskip}
+
+John Doe
+
+
+
+\tableofcontents
+
+\listoffigures
+%\listoftables
+
+
+
+\chapter*{List of Symbols and Abbreviations}
+
+% This is not a "proper" table, so no table environment
+
+% Suppressed left colsep; 20% - 1 x colsep; right colpsep; left colpadding; 80% - 1 x colpadding; suppressed right colpadding
+\begin{tabular}[h]{@{} p{0.2\textwidth-\tabcolsep} p{0.8\textwidth-\tabcolsep} @{}}
+CC license & Creative Commons license \\
+LaTeX & typesetting system for scientific writing \\
+SI system & Système international d'unités, International System of Units \\
+TUT & Tampere University of Technology \\
+URL & Uniform Resource Locator 
+\end{tabular}
+
+\begin{tabular}[h]{@{} p{0.15\textwidth-\tabcolsep} p{0.85\textwidth-\tabcolsep} @{}}
+$a$ & acceleration \\
+$\mathbf{F}$ & force \\
+$m$ & mass
+\end{tabular}
+
+The abbreviations and notations used in your thesis are defined collectively at the start of the thesis, and when they appear in the body for the first time.
+Parentheses are used with abbreviations then.
+
+
+% It may be useful to break the chapters into their own files and then do eg. \include{01-introduction} or \include{C-resultsdiscussion}
+
+\chapter{Introduction}
+\label{ch:Introduction}
+
+This template is associated with the Tampere University of Technology Thesis Writing Guide \citep{Tut2017}.
+A thesis or report typically includes the following chapters:
+
+\begin{tabular}[h]{l}
+Title page\\
+Abstract\\
+
+Preface\\
+Contents\\
+List of abbreviations and symbols\\
+1. Introduction\\
+2. Theoretical background\\
+3. Research methodology and materials\\
+4. Results and analysis (possibly split into separate chapters) \\
+5. Conclusions\\
+References\\
+Appendices (if applicable)
+\end{tabular}
+
+Chapter \ref{ch:writingstyle} of this template covers the basic rules of writing style in regard to figures, tables and mathematical notations.
+Chapters \ref{ch:referencingstyles} and \ref{ch:conclusion} present referencing styles and a short conclusion.
+A documentation of the document class options is given as an appendix.
+
+
+
+\chapter{Writing style}
+\label{ch:writingstyle}
+
+Effective written communication requires both sound content and clear style.
+Keep the layout of your thesis neat and presentable and pay attention to your writing style in order to portray a professional image. 
+
+\section{Text}
+
+A thesis is written with a single-column layout on one- or two-sided A4 sheets (210 mm x 297 mm).
+The font type of the body text is usually Times New Roman (Times on this LaTeX template) and the font size is 12 pt.
+The line spacing is 16.56 points (Microsoft Word multiplier 1.2), and the text is fully justified and hyphenated.
+Arial 18 pt is the font/size of headings (the corresponding Helvetica on this template), and there is a 42 pt space above and below.
+The font size of subheadings is 14.
+There is an 18 pt space above subheadings and 12 pt space below them.
+
+The basic instructions to writing style are:
+\begin{itemize} % never start a paragraph with a list (i. e. no empty line before this)
+  \item Always think of your reader when you are writing and provide cues. Move from general cases to specific cases, details and exceptions.
+  \item Highlight your key points, for example, by discussing them in separate chapters or presenting them in a table or figure. Use \emph{italics} or \emph{boldface} (in this order of preference) in the text for emphasis, but don’t overdo it.
+  \item Avoid long sentences and complex sentence structures. A full stop is the best way to end a sentence.
+  \item Use active verbs to make a dynamic impression. You should avoid the first person pronoun ``I'', except in your preface.
+  \item Do not make overly complicated statements or use jargon. Write what you mean directly. Use established terminology and neutral language.
+  \item The minimum length of chapters and subchapters is two paragraphs, and you need to consider the balance of chapters.  Paragraphs must always consist of more than one sentence.
+  \item Do not use more than three levels of headings, such as 4.4.2.
+  \item Do not overuse abbreviations. Use lower case and upper case letters consistently in abbreviations and acronyms.
+\end{itemize}
+
+\section{Figures}
+
+You must refer to all the figures in the body text.
+The reference should preferably appear on the same page as the actual figure or before it.
+Figures and tables must be consecutively numbered and are primarily placed at the top of the page.
+The automation of the LaTeX publishing system will generally place figures well.
+Never start a chapter with a figure, table or list.
+The caption is placed under the figure and always on the same page as the figure.
+
+All figures must be explained in the body text, so that readers know what they are supposed to notice.
+Figures generated by analysis software usually need further editing, such as figure \ref{fig:figure-quality}.
+Any text included in the figures must be readable.
+The recommended font size is the same as that of the body text but no smaller than 10 pt.
+
+\begin{figure}
+    %\includegraphics[width=0.45\textwidth]{kuvaajaA}\hfill\includegraphics[width=0.45\textwidth]{kuvaajaB}
+    \vspace*{5cm}
+    \framebox[0.45\textwidth]{Image omitted\par}\hfill\framebox[0.45\textwidth]{Image omitted}
+    \vspace*{5cm}
+    \caption{Diagrams should be edited before publication. The diagram on the right is an edited version of the one on the left.}
+    \label{fig:figure-quality}
+\end{figure}
+
+\section{Tables}
+
+Like figures, tables are consecutively numbered and captioned, as in Table \ref{tab:thinfilm-evaporationconditions}.
+The caption is placed on the same page and above the table.
+Variables, abbreviations and symbols that appear in the table are defined in the body text, if necessary.
+You must refer to all the tables in the body text, preferably before the table.
+The principal conclusions from the table and interpretation instructions are given in the text.
+
+\begin{table}[ht]
+\caption{Example of evaporation conditions in a thin film structure.}
+\label{tab:thinfilm-evaporationconditions}
+\footnotesize
+\begin{tabularx}{\textwidth}{l | >{\raggedleft}X >{\raggedleft}X >{\raggedleft}X >{\raggedleft}p{6.5em} >{\raggedleft}X >{\raggedleft\arraybackslash}X}
+  \hline
+  \textbf{Substance} & \textbf{Thickness (nm)} & \textbf{Correction co\-efficient} & \textbf{Pressure (mbar)} & \textbf{Temperature (\textdegree C)} & \textbf{Current (mA)} & \textbf{Speed (nm/s)} \\
+  \hline \hline
+  % E.g. the mhchem package could be nice for typesetting chemical notation
+  SiO$_\textrm{2}$ & 181,0 & 1,10 & 3,0 $\cdot$ 10\textsuperscript{-5} & 90,6 & 20--23 & 0,2 \\
+  TiO$_\textrm{2}$ & 122,1 & 1,55 & 15,0 $\cdot$ 10\textsuperscript{-5} & 91,1 & 93--100 & 0,1 \\
+  \hline
+\end{tabularx}
+\end{table}
+
+Mark the titles of the columns and units clearly.
+You can use boldface to highlight the titles and use a double horizontal line to separate them from the rest of the table. The order of the columns and rows must be carefully considered.
+Do not surround all the cells with a border, as it may make your table harder to read.
+Put a line on top and bottom of the table.
+You can add a horizontal line between every 4--5 rows, if the data is not grouped into categories. The numbers in each column are right aligned (optimally lined up at the decimal point) for easy comparison.
+You should preferably use SI units; established prefixes or powers of ten such that they can be placed in the title of the column. More information on using tables can be found in \citep{Salminen2012}.
+
+\section{Mathematical notations}
+
+For the sake of clarity, write numbers using numerals rather than spelling them out, for example ``6 stages'' is more clear than ``six stages''.
+For easier readability, you should also use thousand separators.
+Never omit the leading zero in decimals.
+A comma is used as a decimal separator in the Finnish language and a period in the English language.
+
+Like numbers, it is advisable to abbreviate units of measurement.
+There is a space between the number and the unit, but you should keep them on the same line \footnote{In LaTeX, you can do this by replacing a space with the character ``\textasciitilde''.}.
+It is better to compile a table or graph than include a great deal of numerical values in the body text.
+Measures can often be qualified, and correspondingly all qualitative attributes (large, small, expensive, fast) should be accompanied by a numeral value to describe the magnitude.
+
+
+
+You should preferably use generally known and well defined concepts and standard conventions and symbols for representing them.
+Avoid using too many concepts and notations that you have invented yourself.
+New concepts should be defined when they appear in the text for the first time.
+Upper case and lower case letters mean different things in symbols and units of measurement.
+Do not use the same symbol to mean different things.
+Units of measurement must be clearly marked.
+
+You can find mathematical symbols and Greek letters in the LaTeX macros and modes, such as
+\emph{\$\textbackslash Theta(n\textasciicircum2)\$}
+or
+\emph{\textbackslash begin\textbraceleft equation\textbraceright\ \textbackslash sin(\textbackslash frac\textbraceleft \textbackslash pi\textbraceright\{2\}) = 1 \textbackslash end\{equation\}}
+.
+Simple formulas may be displayed within the body of the text without numbering.
+As an example of the other way, Newton's Second Law can be presented in the following way:
+\begin{equation} % never start a paragraph with an equation (i.e. no empty line before this)
+\label{eq:Newton2} ma = F,
+\end{equation} % on the other hand, a paragraph could end with an equation, although this one doesn't
+where $m$ denotes the mass of an object, $a$ means acceleration, and $F$ means force.
+Please note that all the variables must be defined at the point of their first appearance in your thesis.
+
+% instead of \eqref{} you may also use (\ref{}) if you like - the former is a convenience for adding the parentheses
+
+Mathematical formulas are numbered, if they are written on separate lines and referred to in the main body of the text, see equation \eqref{eq:Newton2} for an example.
+The number is usually put in parenthesis and right aligned, as in this guide.
+In the English-speaking world, formulas and equations need to be contained in complete sentences with proper punctuations, as in equation \eqref{eq:Newton2}.
+If you are writing your thesis in Finnish, it is acceptable to leave out the period or comma following equations.
+Occasionally mathematical notations are preceded by an identifier, such as Definition 1 or Theorem 1 \citep{Ruohonen2009}.
+Similar to figures and tables, mathematical formulas may be numbered sequentially throughout the whole thesis or sequentially per chapter, either as (1), (2)… or (1.1), (1.2), \ldots, (2.1) (see Appendix \ref{ch:classdocumentation}).
+
+Do not start a sentence with a mathematical symbol.
+Variables, such as $x$ and $y$, are generally presented in italics.
+LaTex uses italics for variables automatically in the math mode to make them stand out \citep{Oetiker2011}.
+Elementary functions, special functions and operators, on the other hand, are presented in regular font: $\sin (2x+y)$, $\operatorname{grad} T$, $\operatorname{div} B$, $\frac{\lim (x^2 - 1)}{x + 1}$.
+
+
+\section{Programs and algorithms}
+
+In a thesis, codes and algorithms are written using monospaced font, such as \texttt{var}.
+The \emph{Courier} font is recommended in LaTeX instead of the default monospaced one.
+\footnote{There are different conventions for source code, shell scripts and algorithms.
+  For the last-mentioned, for instance, appropriately aligned text with a variable-width font may look good.
+  The versatile options of the \emph{listings} package are worth explorng.}
+
+If the length of the code or algorithm is less than 10 lines and you do not refer to it later on in the text, you can present it similarly to formulas.
+If the code is longer but shorter than a page, you present like a figure (like Program \ref{lst:sort}) titled ``Program'' or ``Algorithm''.
+Here code is kept from breaking to multiple pages by the \emph{float} option of the \emph{listings} package.
+
+You should add some comments to the code and indent it consistently.
+The actions performed by the code must be outlined in broad terms in the body text.
+Line numbers make it much easier to refer to the code in the text.
+For example, the listings package for LaTex \citep{Heinz2006, Oetiker2011} is a tool for typesetting source code and pseudocode and highlighting reserved words.
+
+% You could also load the code from an external file
+\iftrue % this is used as a "comment block"
+\begin{lstlisting}[float,caption={Example of presenting program code as a figure in a thesis.},label={lst:sort},language=C]
+void sort( charPair arr[], int size )
+{
+  // Sort a table so that each round looks up the smallest remaining
+  // letter and moves it to correct location.
+  for( int i = 0; i < size; ++i )
+  {
+    // Find the smallest, i.e. closest to letter 'a'
+    int idxSmallest = i;
+    for( int j = i; j < size; ++j )
+    {
+      if( arr[ j ].replacable
+          < arr[ idxSmallest ].replacable )
+      {
+        idxSmallest = j;
+      }
+    }
+    // Move the smallest item to its correct location
+    charPair tmp = arr[ i ];
+    arr[ i ] = arr[ idxSmallest ];
+    arr[ idxSmallest ] = tmp;
+  }
+  return;
+}
+\end{lstlisting}
+\else
+\label{lst:sort}
+Code example commented out in this version. Load the \texttt{listings} package if you are using code listings.
+\fi
+
+
+
+
+\chapter{Referencing styles}
+\label{ch:referencingstyles}
+
+Different referencing styles determine how you create 1) in-text citations and 2) the bibliography.
+Two common referencing styles are presented in this chapter:
+\begin{enumerate}
+\ifnameyear
+  \item Numeric referencing (Vancouver system), such as [1], [2]\ldots
+  \item Name-year system (Harvard system), such as \citep{Weber2001}, \citep{Kaunisto2003}
+\else
+  \item Numeric referencing (Vancouver system), such as \cite{Weber2001}, \cite{Kaunisto2003}\ldots
+  \item Name-year system (Harvard system), such as (Weber 2001), (Kaunisto 2003)
+\fi
+\end{enumerate}
+
+In the Vancouver system, a running number is allocated to your sources and you insert the number into your text in square brackets [].
+In the Harvard system, the last name of the author and the year of publication are given in round brackets ().
+Both styles are acceptable, but the conventions for referencing vary between disciplines.
+You must pick one and use is consistently throughout your thesis.
+
+
+\section{In-text citations}
+
+In-text citations are placed within the body of the text as close to the actual citation as possible.
+The citation is generally placed within the sentence before the full stop.
+
+\ifnameyear
+  \begin{quotation}
+  Weber argues that \ldots [1].\\
+  Cattaneo \emph{et al.} introduce in their study [2] a new\ldots\\
+  The result is \ldots [1, s.~23]. One must also note\ldots [1, s.~33--36]
+  \end{quotation}
+
+  \begin{quotation}
+  In accordance with the presented theory \ldots \citep{Weber2001}\\
+  It must especially be noted\ldots (\citeauthor{Cattaneo2004})\\
+  \citet[s.~230]{Weber2001} has stated \ldots
+  \end{quotation}
+    
+  \begin{quotation}
+  Based on literature in the field [1,3,5]\ldots\\
+  Based on literature in the field [1][3][5]\ldots\\
+  The topic has been widely studied [6--18]\ldots
+  \end{quotation}
+    
+  \begin{quotation}
+  \ldots existing literature \citep{Weber2001,Kaunisto2003,Cattaneo2004} has\ldots
+  \end{quotation}
+\else
+  \begin{quotation}
+  Weber argues that \ldots \cite{Weber2001}.\\
+  Cattaneo \emph{et al.} introduce in their study \cite{Cattaneo2004} a new\ldots\\
+  The result is \ldots \cite[s.~23]{Weber2001}. One must also note\ldots \cite[s.~33--36]{Weber2001}
+  \end{quotation}
+
+  \begin{quotation}
+  In accordance with the presented theory \ldots (Weber 2001)\\
+  It must especially be noted\ldots (Cattaneo \emph{et al.})\\
+  Weber (2001) has stated \ldots
+  \end{quotation}
+    
+  \begin{quotation}
+  Based on literature in the field \cite{Weber2001,Cattaneo2004,Kaunisto2003}\ldots\\
+  Based on literature in the field \cite{Weber2001}\cite{Cattaneo2004}\cite{Kaunisto2003}\ldots\\
+  The topic has been widely studied [6--18]\ldots % not really applicable when sorting bibliography alphabetically
+  \end{quotation}
+    
+  \begin{quotation}
+  \ldots existing literature (Weber 2001; Kaunisto 2003; Cattaneo et al. 2004) has\ldots
+  \end{quotation}
+\fi
+
+For numeric referencing, the \emph{bibtex} reference management application and the LaTeX default \emph{cite} command are sufficient.
+Name-year citations require the \emph{natbib} package.
+The more recent reference management application \emph{biblatex} may be interesting due to its better Unicode support and wider metadata vocabulary for references, but this file is built on \emph{bibtex} because of the wider support for it.
+Depending on your runtime environment, getting the citations to output correctly may require multiple compilations.
+
+Example citations to produce a large bibliography: \citep{Weber2001} \citep{Cattaneo2004} \citep{Kaunisto2003} \citep{Li2004} \citep{Ho-Ching2003} \citep{Puhakka2004} \citep{Nissinen2011en} \citep{Ohlstrom2005} \citep{OMAP4430} \citep{InjectionMolding2005} \citep{Raakakk2002} \citep{Intel2013} \citep{Davies2004} \citep{SFSISO1000A1} \citep{Keskinen2005en} \citep{Sahkoturvallisuuslaki1996} \citep{Pan2013} \citep{Tty2005en} \citep{ConstInorgComp2005}, \citep{Radionuklidit2003en} \citep{Kalkkihiekkatiilet2004} \citep{Miettinen2005en}
+
+
+\section{Bibliography}
+
+The entries must include all the details listed in Table \ref{tab:bibliographic-information}.
+
+\begin{table}[ht!]
+\caption{Necessary bibliographic information.}
+\label{tab:bibliographic-information}
+% A simple table for which plain tabular is enough
+\begin{tabular}{l l | l l}
+\hline
+\textbf{\#} & \textbf{Numeric system} & \# & \textbf{Name-year system} \\
+\hline \hline
+1. & authors, & 1. & authors,\\
+& & 2. & (year of publication) \\
+2. & title, & 3. & title, \\
+3. & publisher, & 4. & publisher, \\
+4. & year of publication, & \\
+5. & pages, & 5. & pages, \\
+6. & URL, if applicable & 6. & URL, if applicable \\
+\hline
+\end{tabular}
+\end{table}
+
+Formatting examples of an journal article in bibliography are provided below, first in the numeric style and then the name-year style.
+
+\begin{quotation}
+\small
+\begin{enumerate}
+  \renewcommand*\labelenumi{[\theenumi]}
+  \setcounter{enumi}{99}
+  \item K. Keutzer, A.R. Newton, J.M. Rabaey, A. Sangiovanni-Vincentelli, System-level design: orthogonalization of concerns and platform-based design, IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems, vol.19, no.12, Dec 2000, pp.1523--1543.
+\end{enumerate}
+\end{quotation}
+
+\begin{quotation}
+Keutzer, K., Newton, A.R., Rabaey, J.M. \& Sangiovanni-Vincentelli A. (2000). System-level design: orthogonalization of concerns and platform-based design. IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems. Vol.19(12), pp.1523--1543.
+\end{quotation}
+
+Your references are listed at the end of your thesis in alphabetical order based on the first author's last name.
+
+
+
+\chapter{Conclusion}
+\label{ch:conclusion}
+
+The writing guide is aimed at text as clear and understandable as possible, which is important in all written reports.
+This template and the corresponding Word template ensure that theses have a uniform and clear appearance.
+
+Each text and presentation must have a conclusion.
+This is higlighted by adding one to this template as well, albeit somewhat short and artificial.
+A concice summary table helps to reiterate the most important parts.
+
+
+
+%\addto\extrasenglish{\btxifchangecaseoff} % Controls the case-changing for English titles. Make sure that case is preserved for abbreviations and proper nouns, e.g. title={The {ABC} of {Tex}: An Introduction to the Typesetting System}
+
+\ifnameyear
+  \bibliographystyle{babapaliktutnat}
+\else
+  \bibliographystyle{bababbrtut}
+\fi
+\bibliography{references}
+
+
+
+
+\appendix
+
+\chapter{Usage of the tutthesis document class}
+\label{ch:classdocumentation}
+
+\section{Document class options}
+
+Class options:
+
+\begin{tabular}[h]{@{} p{0.3\textwidth-\tabcolsep} p{0.7\textwidth-\tabcolsep} @{}}
+\texttt{oneside}, \texttt{twoside} & As with the class \texttt{report} \\
+\texttt{draft}, \texttt{final} & As with the class \texttt{report} \\
+\texttt{globalnumbering} & If set, figures, tables and equations are numbered consecutively throughout the document instead of numbering per chapter. Note that there may be other numbered items; for some packages this may need to be set separately. \\
+\texttt{centeredcaptions} & If set, captions are displayed centered\\
+\texttt{draftfooter} & If set, the title and print date are shown in the footer. This may be handy if printing drafts. Implied by \texttt{draft}.
+\end{tabular}
+
+Commands redefined by the class:
+
+\begin{tabular}[h]{@{} p{0.3\textwidth-\tabcolsep} p{0.7\textwidth-\tabcolsep} @{}}
+  \verb|\maketitle| & Makes the title page from the given bibliographic information. Normally the title is set left-aligned (no hyphenation), but long titles may look better with the justified and form produced when option \texttt{justified} is used.
+\end{tabular}
+
+Additionally, by using the command \verb|\pagestyle{headings}| in the document preamble headings will be set in the upper margin, except for the first pages of each chapter.
+
+\section{Citations}
+Use the \texttt{natbib} package if you want to use name-year citations.
+The more recent \texttt{biblatex} system may be interesting as well.
+It works better with Unicode, and it has a richer metadata vocabulary (e.g. the ``total page count'' and ``internet source cited on'' fields).
+It may however cause some compatibility issues, and if you ever publish a scientific paper, usage of the older \texttt{bibtex} is usually mandated.
+Additionally, many databases only produce \texttt{bib} files with \texttt{bibtex} fields.
+
+
+\section{Text formatting in headings}
+
+If you are writing any more complicated math than equation \eqref{eq:Newton2}, any complex notation in your headings, or foreign characters, it is recommended to use a newer engine than PDFLatex.
+XeTeX and LuaTeX can utilize OpenType fonts (1996), rather than Type 1 (1984) or the older LaTeX default OT1.
+
+Actual math should not be in headings, but sometimes some more complex notation like superscripts is required.
+Do not use the LaTeX math mode, as that will result in wrong fonts and PDF bookmarks.
+Case-sensitive mathematical identifiers should not be converted to uppercase in headings.
+Some examples are below.
+
+\subsection{The 100 m\texttwosuperior\ project}
+
+Superscript two, unlike many other superscript characters, is widely supported and available in fonts.
+
+\newcommand*{\varx}{x}
+\subsection{Find \textit{\protect\varx}.} % \protect prevents uppercasing in chapter headings, on this level we could also do just \textit{x}
+
+A cursive variable in a section heading is quite simple, but for uppercased headings extra care is needed for the variable not to get uppercased.
+
+% Most fonts don't have the plussuperior glyph available, so we'll have to fake it. If you're using LuaTeX and you have the GNU Free fonts available, you could define a fallback with fontspec (being careful about sans/serif variants)
+\newcommand*{\plussuperior}{\textsuperscript{+}}
+% The name plussuperior is not arbitrary - hyperref psdextra recognizes it
+
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
+  \newcommand*{\tbeta}{β}
+  \subsection{\protect\tbeta\plussuperior-decay} % you could also load the package textcase and use \NoCaseChange{β}
+\else\ifx\textgreekfontmap\undefined\else
+  \subsection{\protect\textbeta\plussuperior-decay}
+  Note that with PDFLatex, Greek letters in headings appear off as there are no sans-serif bold upright lowercase Greek letters available in common Type 1 fonts.
+\fi\fi
+
+
+\section{Math mode}
+
+This section serves as a demonstration and test of math input.
+The equivalent text-mode typesetting is given for comparison, but obviously should not be used for mathematical material.
+The bold math mode is not recommended as moth math fonts do not have a bold variant, but it is included for the sake of completeness.
+
+Single-letter identifiers:
+
+\ifx \setmathfont \undefined % if unicode-math not loaded
+\begin{tabular}{@{} l l l l l l l l @{}}
+Mode & Default & Upright  & Italic    & Bold       & Sans-serif   & Teletype\\
+Text & a       & --       & \textit{a} & \textbf{a} & \textsf{a} & \texttt{a} \\
+Math & $a$     & $\mathrm{a}$ & $\mathit{a}$ & $\mathbf{a}$ & $\mathsf{a}$ & $\mathtt{a}$ \\
+Math, bold & {\mathversion{bold}$a$} & {\mathversion{bold}$\mathrm{a}$} & {\mathversion{bold}$\mathit{a}$} & {\mathversion{bold}$\mathbf{a}$} & {\mathversion{bold}$\mathsf{a}$} & --
+\end{tabular}
+\else % unicode-math loaded and we can use the identifier variants for better typesetting
+\begin{tabular}{@{} l l l l l l l l @{}}
+Mode & Default & Upright  & Italic    & Bold       & Sans-serif   & Teletype\\
+Text & a       & --       & \textit{a} & \textbf{a} & \textsf{a} & \texttt{a} \\
+Math & $a$     & $\symrm{a}$ & $\symit{a}$ & $\symbf{a}$ & $\symsf{a}$ & $\symtt{a}$ \\
+Math, bold & {\mathversion{bold}$a$} & {\mathversion{bold}$\symup{a}$} & {\mathversion{bold}$\symit{a}$} & {\mathversion{bold}$\symbf{a}$} & {\mathversion{bold}$\symsf{a}$} & --
+\end{tabular}
+\fi
+
+Multiple-letter identifiers:
+
+\begin{tabular}{@{} l l l l l l l l @{}}
+Mode & Default & Upright  & Italic    & Bold       & Sans-serif   & Teletype\\
+Text & NP       & --       & \textit{NP} & \textbf{NP} & \textsf{NP} & \texttt{NP} \\
+Math & --   & $\mathrm{NP}$ & $\mathit{NP}$ & $\mathbf{NP}$ & $\mathsf{NP}$ & $\mathtt{NP}$ \\
+Math, bold & -- & {\mathversion{bold}$\mathrm{NP}$} & {\mathversion{bold}$\mathit{NP}$} & {\mathversion{bold}$\mathbf{NP}$} & {\mathversion{bold}$\mathsf{NP}$} & --
+\end{tabular}
+
+The \emph{unicode-math} package also allows bold and/or italic sans-serif math typesetting.
+
+
+\end{document}
