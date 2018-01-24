@@ -67,7 +67,7 @@
 % If you want non-ASCII characters (e.g. in comments), check out the listingsutf8 package
 
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi>0
-  \usepackage[math-style=ISO]{unicode-math} % must not precede amsmath and most other math and font related packages
+  \usepackage[math-style=ISO]{unicode-math} %must not precede amsmath and most other math and font related packages
 \else
   %\usepackage{bm} % The \bm command is used for bold italic variables used in some fields not to be used with unicode-math
   %\usepackage[helvratio=1]{newtxtext} \usepackage{newtxmath}% some recommend the newtx fonts
@@ -352,7 +352,7 @@ In a thesis, codes and algorithms are written using monospaced font, such as \te
 The \emph{Courier} font is recommended in LaTeX instead of the default monospaced one.
 \footnote{There are different conventions for source code, shell scripts and algorithms.
   For the last-mentioned, for instance, appropriately aligned text with a variable-width font may look good.
-  The versatile options of the \emph{listings} package are worth explorng.}
+  The versatile options of the \emph{listings} package are worth exploring.}
 
 If the length of the code or algorithm is less than 10 lines and you do not refer to it later on in the text, you can present it similarly to formulas.
 If the code is longer but shorter than a page, you present like a figure (like Program \ref{lst:sort}) titled ``Program'' or ``Algorithm''.
