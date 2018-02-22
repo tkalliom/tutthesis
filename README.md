@@ -35,4 +35,6 @@ The document class writes the bibliographic information into an `.xmpdata` file 
 However, `pdfx` is a relatively young package and may still have issues with features such as OpenType fonts, so its usage is not required.
 The ICC color profile required by the PDF/A standard is included in this repository for convenience because Debian (and by extension, Ubuntu, which is used by Overleaf) strips it out of `texlive-latex-extra` and until very recently did not did not refer to `icc-profiles` where the file is located instead. 
 
-If you don't know what PDF/A and `pdfx` are and are not interested to learn, you can probably just ignore it.
+Until LaTeX / PDF/A support becomes more robust, the preflight tool in Adobe Acrobat Pro is probably the best option for getting a proper PDF/A file.
+Note that even if a PDF reader shows a note about the PDF standard, that does not mean there are no errors in the file.
+However, enabling `pdfx` is probably still a useful step in the right direction, since it at least sets metadata properly.
