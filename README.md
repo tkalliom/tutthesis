@@ -26,7 +26,7 @@ Similarly to the standard `\title` and `\author`, there are commands for definin
 Set these in the preamble, and then again translated inside an `otherlanguage` environment if your thesis has two abstracts.
 
 The writing guide leaves several layout choices to the writer.
-These are set with standard document class options (e.g. `twoside`), custom options (e.g. `globalnumbering`), standard commants (e.g. `\pagestyle{headings}` or package-specific commands (e.g. `\addto\extrasenglish{\btxifchangecaseoff}`).
+These are set with standard document class options (e.g. `twoside`), custom options (e.g. `globalnumbering`), standard commands (e.g. `\pagestyle{headings}` or package-specific commands (e.g. `\addto\extrasenglish{\btxifchangecaseoff}`).
 See the appendix of the example document for more documentation; furthermore, the two example documents themselves cover both versions of each choice.
 
 ## PDF/A
